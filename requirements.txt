@@ -10,3 +10,6 @@ pymupdf
 duckduckgo-search
 requests
 httpx
+groq
+openai
+Pillow
