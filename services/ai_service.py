@@ -84,12 +84,14 @@ def generate_study_plan(topics: list, total_days: int, engine: str = "groq") -> 
     Create a {total_days}-day study plan for these topics: {json.dumps(topics)}.
     Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
     {{
-        "total_days": {total_days},
-        "daily_plan": [
+        "plan_title": "Optimized Study Plan",
+        "days": [
             {{
                 "day": 1,
-                "focus": "Topic 1",
-                "tasks": ["Task A", "Task B"]
+                "date": "YYYY-MM-DD (if applicable, else null)",
+                "topics_to_cover": ["Topic 1", "Topic 2"],
+                "tasks": ["Task A", "Task B"],
+                "estimated_minutes": 120
             }}
         ]
     }}
@@ -111,7 +113,8 @@ def generate_revision_notes(topic: str, engine: str = "groq") -> dict:
                 "heading": "Heading Name",
                 "content": "Detailed markdown formatted text here..."
             }}
-        ]
+        ],
+        "summary": "A brief summary of the entire topic."
     }}
     '''
     raw_response = call_ai_engine(prompt, engine)
