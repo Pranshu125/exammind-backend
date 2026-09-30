@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pypdf
+google-generativeai
+google-api-python-client
+pydantic
+python-multipart
+python-dotenv
+pymupdf
+duckduckgo-search
+requests
+httpx
