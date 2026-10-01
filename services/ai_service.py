@@ -82,7 +82,7 @@ def call_ai_engine(prompt: str, engine: str = "gemini") -> str:
 def generate_study_plan(topics: list, total_days: int, engine: str = "groq") -> dict:
     prompt = f'''
     Create a {total_days}-day study plan for these topics: {json.dumps(topics)}.
-    Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+    If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
     {{
         "plan_title": "Optimized Study Plan",
         "days": [
@@ -105,7 +105,7 @@ def generate_study_plan(topics: list, total_days: int, engine: str = "groq") -> 
 def generate_revision_notes(topic: str, engine: str = "groq") -> dict:
     prompt = f'''
     Generate highly detailed, educational revision notes for the topic: '{topic}'.
-    Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+    If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
     {{
         "topic_name": "{topic}",
         "sections": [
@@ -125,7 +125,7 @@ def generate_revision_notes(topic: str, engine: str = "groq") -> dict:
 def generate_quiz(topic: str, difficulty: str = "Medium", num_questions: int = 5, engine: str = "groq") -> dict:
     prompt = f'''
     Create a {difficulty} difficulty multiple choice quiz about '{topic}' with exactly {num_questions} questions.
-    Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+    If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
     {{
         "topic_name": "{topic}",
         "questions": [
@@ -150,12 +150,7 @@ def generate_quiz(topic: str, difficulty: str = "Medium", num_questions: int = 5
 
 def chat_with_notes(messages: list, topic: str, engine: str = "gemini") -> str:
     system_prompt = f"""You are an expert AI study tutor for the topic: '{topic}'. Keep answers concise and highly educational.
-IMPORTANT: When explaining complex concepts, or if the user asks for a diagram, flowchart, or visual, you MUST use Mermaid.js markdown blocks (```mermaid ... ```).
-CRITICAL MERMAID SYNTAX RULES:
-1. Always start flowcharts with `flowchart TD` or `flowchart LR`.
-2. Always use valid arrow syntax: `-->` for solid links, `-.->` for dotted. Never use single hyphens like `->`.
-3. You MUST wrap ALL node text labels in double quotes, especially if they contain spaces or parentheses. Example: `A["Initial Step (Start)"] --> B["Final Step"]`.
-4. Avoid HTML tags inside Mermaid labels. Keep diagrams clean and structural."""
+IMPORTANT: When explaining complex concepts, or if the user asks for a diagram, flowchart, or visual, you MUST use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid."""
     
     formatted_messages = [{"role": "system", "content": system_prompt}]
     for msg in messages:
@@ -207,7 +202,7 @@ CRITICAL MERMAID SYNTAX RULES:
 def extract_timetable(timetable_text: str, engine: str = "groq") -> dict:
     prompt = f'''
     Analyze the following exam timetable text and extract a list of exams. 
-    Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+    If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
     {{
         "exam_name": "Name of the overarching exam period (e.g. CAT 2, Midterms)",
         "subjects": [
@@ -234,7 +229,7 @@ def extract_timetable_from_image(image_bytes: bytes) -> dict:
             image = Image.open(io.BytesIO(image_bytes))
             prompt = '''
             Analyze the following exam timetable image and extract a list of exams. 
-            Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+            If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
             {
                 "exam_name": "Name of the overarching exam period (e.g. CAT 2, Midterms)",
                 "subjects": [
@@ -261,7 +256,7 @@ def extract_syllabus_from_image(image_bytes: bytes) -> dict:
             image = Image.open(io.BytesIO(image_bytes))
             prompt = '''
             Analyze the following syllabus image and extract a list of core study topics. 
-            Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+            If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
             {
                 "subject": "Name of the subject (infer if possible)",
                 "topics": [
@@ -293,7 +288,7 @@ def generate_master_schedule(exam_data: dict, engine: str = "groq") -> dict:
     Here is the data:
     {json.dumps(exam_data, indent=2)}
     
-    Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+    If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
     {{
         "exam_name": "Name of the exam (e.g. CAT 2)",
         "created_at": "YYYY-MM-DD",
@@ -335,7 +330,7 @@ def solve_doubt(question: str, image_bytes: bytes = None) -> str:
 def extract_syllabus_topics(text: str, engine: str = "groq") -> dict:
     prompt = f'''
     Analyze the following syllabus text and extract a list of core study topics. 
-    Include Mermaid.js markdown blocks (```mermaid ... ```) for diagrams and flowcharts in your explanation ONLY IF needed. Return ONLY a JSON object exactly matching this schema:
+    If you need to include diagrams or flowcharts in your explanation, use raw ASCII art / text-based symbols wrapped in standard markdown code blocks (```text ... ```) instead of Mermaid. Return ONLY a JSON object exactly matching this schema:
     {{
         "subject": "Name of the subject (infer if possible)",
         "topics": [
