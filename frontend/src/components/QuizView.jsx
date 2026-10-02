@@ -15,6 +15,11 @@ export default function QuizView() {
   const [showResults, setShowResults] = useState(false);
   const { engine, setEngine } = useAI();
 
+  const engineOptions = [
+    { value: 'groq', label: 'Groq (Fast)' },
+    { value: 'gemini', label: 'Gemini' }
+  ];
+
   const difficultyOptions = [
     { value: 'Beginner', label: 'Beginner' },
     { value: 'Medium', label: 'Medium' },
@@ -76,14 +81,12 @@ export default function QuizView() {
           className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none w-full min-w-0"
         />
                 <div className="flex gap-3 w-full md:w-auto">
-          <select
-            value={engine}
-            onChange={(e) => setEngine(e.target.value)}
-            className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-medium"
-          >
-            <option value="groq">Groq (Fast)</option>
-            <option value="gemini">Gemini</option>
-          </select>
+          <CustomSelect 
+              value={engine}
+              onChange={e => setEngine(e.target.value)}
+              options={engineOptions}
+              className="flex-1 md:flex-none md:w-40"
+            />
           <CustomSelect 
             value={difficulty}
             onChange={e => setDifficulty(e.target.value)}
@@ -112,7 +115,10 @@ export default function QuizView() {
 
       {quiz && (
         <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 animate-in fade-in">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100 border-b pb-4">Quiz: {quiz.topic_name}</h2>
+          <div className="flex justify-between items-center border-b pb-4 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Quiz: {quiz.topic_name}</h2>
+            <TokenBadge data={quiz} />
+          </div>
           
           <div className="space-y-8">
             {quiz.questions?.map((q, qIndex) => (
@@ -171,7 +177,7 @@ export default function QuizView() {
               <p className="text-purple-700 mb-4">
                 {calculateScore() === quiz.questions.length ? 'Perfect! You mastered this topic.' : 'Keep reviewing the notes!'}
               </p>
-              <TokenBadge data={quiz} />
+              
             </div>
           )}
         </div>

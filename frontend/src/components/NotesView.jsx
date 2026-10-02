@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { BookOpen, Send, Plus, Loader2 } from 'lucide-react';
 import { useAI } from '../contexts/AIContext';
 import TokenBadge from './TokenBadge';
+import CustomSelect from './CustomSelect';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../lib/firebase';
 import { collection, addDoc, getDocs, doc, updateDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
@@ -20,6 +21,11 @@ export default function NotesView() {
   const { currentUser } = useAuth();
   
   const messagesEndRef = useRef(null);
+
+  const engineOptions = [
+    { value: 'groq', label: 'Groq (Fast)' },
+    { value: 'gemini', label: 'Gemini' }
+  ];
 
   // Fetch saved notes on mount
   useEffect(() => {
@@ -175,14 +181,13 @@ export default function NotesView() {
                 className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
               />
                               <div className="flex gap-2">
-                  <select
-                    value={engine}
-                    onChange={(e) => setEngine(e.target.value)}
-                    className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-medium"
-                  >
-                    <option value="groq">Groq (Fast)</option>
-                    <option value="gemini">Gemini</option>
-                  </select>
+                  <CustomSelect 
+                      value={engine}
+                      onChange={(e) => setEngine(e.target.value)}
+                      options={engineOptions}
+                      className="w-40 bg-white"
+                      direction="up"
+                    />
                   <button 
                     onClick={createNotes}
                     disabled={loadingNotes || !topicName}
@@ -198,7 +203,10 @@ export default function NotesView() {
             {/* Note Content Scroll Area */}
             <div className="flex-1 overflow-y-auto p-6 lg:p-8 space-y-8">
               <div>
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100 border-b dark:border-gray-700 pb-4">{selectedNote.topic_name} - Revision Notes</h2>
+                <div className="flex justify-between items-center border-b dark:border-gray-700 pb-4 mb-6">
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{selectedNote.topic_name} - Revision Notes</h2>
+                    <TokenBadge data={selectedNote} />
+                  </div>
                 <div className="space-y-6">
                   {selectedNote.sections?.map((sec, i) => (
                     <div key={i}>
@@ -212,7 +220,7 @@ export default function NotesView() {
                       <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Summary</h4>
                       <p className="text-gray-600 dark:text-gray-400 italic">{selectedNote.summary}</p>
                     </div>
-                    <TokenBadge data={selectedNote} />
+                    
                   </div>
               </div>
 

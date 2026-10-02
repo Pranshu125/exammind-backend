@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAI } from '../contexts/AIContext';
 import TokenBadge from '../components/TokenBadge';
+import CustomSelect from '../components/CustomSelect';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -16,6 +17,21 @@ export default function PrepMode() {
   const { engine, setEngine } = useAI();
   const { currentUser } = useAuth();
   const decodedTopic = decodeURIComponent(topic);
+
+  const engineOptions = [
+    { value: 'groq', label: 'Groq (Fast)' },
+    { value: 'gemini', label: 'Gemini' }
+  ];
+  const difficultyOptions = [
+    { value: 'easy', label: 'Easy' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'hard', label: 'Hard' }
+  ];
+  const numQuestionsOptions = [
+    { value: '3', label: '3 Questions' },
+    { value: '5', label: '5 Questions' },
+    { value: '10', label: '10 Questions' }
+  ];
   
   const [activeTab, setActiveTab] = useState('notes');
   const [content, setContent] = useState({
@@ -373,29 +389,30 @@ export default function PrepMode() {
           <div className="space-y-4 text-left">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Difficulty</label>
-              <select value={settings.difficulty} onChange={e => setSettings({...settings, difficulty: e.target.value})} className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 outline-none">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
+              <CustomSelect
+                  value={settings.difficulty}
+                  onChange={e => setSettings({...settings, difficulty: e.target.value})}
+                  options={difficultyOptions}
+                  className="w-full bg-gray-50 dark:bg-gray-900"
+                />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Number of Questions</label>
-              <select value={settings.numQuestions} onChange={e => setSettings({...settings, numQuestions: e.target.value})} className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 outline-none">
-                <option value="3">3 Questions</option>
-                <option value="5">5 Questions</option>
-                <option value="10">10 Questions</option>
-              </select>
+              <CustomSelect
+                  value={settings.numQuestions.toString()}
+                  onChange={e => setSettings({...settings, numQuestions: Number(e.target.value)})}
+                  options={numQuestionsOptions}
+                  className="w-full bg-gray-50 dark:bg-gray-900"
+                />
             </div>
                           <div className="flex gap-2 mt-4">
-                <select
+                <CustomSelect
                   value={engine}
                   onChange={(e) => setEngine(e.target.value)}
-                  className="p-3 border border-gray-200 dark:border-gray-700 rounded-xl outline-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-medium"
-                >
-                  <option value="groq">Groq (Fast)</option>
-                  <option value="gemini">Gemini</option>
-                </select>
+                  options={engineOptions}
+                  className="w-40 bg-gray-50 dark:bg-gray-900"
+                  direction="up"
+                />
                 <button onClick={() => generateQAOrQuiz(activeTab)} className="flex-1 bg-[var(--matte-primary)] text-white font-bold py-3 rounded-xl hover:opacity-90 transition-all">
                   Generate Now
                 </button>

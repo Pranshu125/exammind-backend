@@ -210,6 +210,26 @@ export function ThemeProvider({ children }) {
       .shadow-sm, .shadow-md, .shadow-lg { box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08) !important; }
     `;
 
+    
+    // Font Size Override
+    if (fontSize === 'small') {
+      css += 
+        html { font-size: 14px !important; }
+      ;
+    } else if (fontSize === 'large') {
+      css += 
+        html { font-size: 18px !important; }
+      ;
+    } else if (fontSize === 'xlarge') {
+      css += 
+        html { font-size: 20px !important; }
+      ;
+    } else {
+      css += 
+        html { font-size: 16px !important; }
+      ;
+    }
+
     // Layout Density Override
     if (layoutDensity === 'compact') {
       css += `
@@ -228,7 +248,7 @@ export function ThemeProvider({ children }) {
 
     styleEl.innerHTML = css;
 
-  }, [theme, accentColor, layoutDensity]);
+  }, [theme, accentColor, layoutDensity, fontSize]);
 
 
 
