@@ -12,7 +12,7 @@ import MermaidRenderer from '../components/MermaidRenderer';
 export default function PrepMode() {
   const { id, topic } = useParams();
   const navigate = useNavigate();
-  const { engine } = useAI();
+  const { engine, setEngine } = useAI();
   const { currentUser } = useAuth();
   const decodedTopic = decodeURIComponent(topic);
   
@@ -386,9 +386,19 @@ export default function PrepMode() {
                 <option value="10">10 Questions</option>
               </select>
             </div>
-            <button onClick={() => generateQAOrQuiz(activeTab)} className="w-full bg-[var(--matte-primary)] text-white font-bold py-3 rounded-xl mt-4 hover:opacity-90 transition-all">
-              Generate Now
-            </button>
+                          <div className="flex gap-2 mt-4">
+                <select
+                  value={engine}
+                  onChange={(e) => setEngine(e.target.value)}
+                  className="p-3 border border-gray-200 dark:border-gray-700 rounded-xl outline-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-medium"
+                >
+                  <option value="groq">Groq (Fast)</option>
+                  <option value="gemini">Gemini</option>
+                </select>
+                <button onClick={() => generateQAOrQuiz(activeTab)} className="flex-1 bg-[var(--matte-primary)] text-white font-bold py-3 rounded-xl hover:opacity-90 transition-all">
+                  Generate Now
+                </button>
+              </div>
           </div>
         </div>
       );

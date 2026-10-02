@@ -12,7 +12,7 @@ export default function QuizView() {
   const [loading, setLoading] = useState(false);
   const [answers, setAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
-  const { engine } = useAI();
+  const { engine, setEngine } = useAI();
 
   const difficultyOptions = [
     { value: 'Beginner', label: 'Beginner' },

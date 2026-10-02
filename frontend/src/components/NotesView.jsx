@@ -15,7 +15,7 @@ export default function NotesView() {
   const [chatInput, setChatInput] = useState('');
   const [chatLoading, setChatLoading] = useState(false);
   
-  const { engine } = useAI();
+  const { engine, setEngine } = useAI();
   const { currentUser } = useAuth();
   
   const messagesEndRef = useRef(null);
@@ -173,13 +173,23 @@ export default function NotesView() {
                 placeholder="Enter a topic (e.g., 'Linear Regression')" 
                 className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
               />
-              <button 
-                onClick={createNotes}
-                disabled={loadingNotes || !topicName}
-                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
-              >
-                {loadingNotes ? <Loader2 className="animate-spin" size={20} /> : 'Generate Notes'}
-              </button>
+                              <div className="flex gap-2">
+                  <select
+                    value={engine}
+                    onChange={(e) => setEngine(e.target.value)}
+                    className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-medium"
+                  >
+                    <option value="groq">Groq (Fast)</option>
+                    <option value="gemini">Gemini</option>
+                  </select>
+                  <button 
+                    onClick={createNotes}
+                    disabled={loadingNotes || !topicName}
+                    className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
+                  >
+                    {loadingNotes ? <Loader2 className="animate-spin" size={20} /> : 'Generate Notes'}
+                  </button>
+                </div>
             </div>
           </div>
         ) : (
@@ -196,10 +206,15 @@ export default function NotesView() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                  <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Summary</h4>
-                  <p className="text-gray-600 dark:text-gray-400 italic">{selectedNote.summary}</p>
-                </div>
+                                  <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-between items-end">
+                    <div>
+                      <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Summary</h4>
+                      <p className="text-gray-600 dark:text-gray-400 italic">{selectedNote.summary}</p>
+                    </div>
+                    <div className="text-xs text-gray-400 font-mono bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-md whitespace-nowrap">
+                      Tokens: ~{Math.round((JSON.stringify(selectedNote).length) / 3.5)}
+                    </div>
+                  </div>
               </div>
 
               {/* Chat Divider */}
