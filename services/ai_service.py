@@ -277,11 +277,13 @@ def extract_syllabus_from_image(image_bytes: bytes) -> dict:
     raise ValueError("All Gemini keys failed")
 
 def generate_master_schedule(exam_data: dict, engine: str = "groq") -> dict:
+    current_date = exam_data.get("current_date", datetime.now().strftime("%Y-%m-%d"))
     prompt = f'''
     You are an expert AI study planner. I will provide you with an exam period name and a list of subjects.
     For each subject, I will provide the exam date and time, and the core topics that need to be studied.
     
-    Your task is to create a realistic, balanced, and optimized daily study schedule starting from TODAY until the last exam date.
+    Your task is to create a realistic, balanced, and optimized daily study schedule starting precisely from TODAY ({current_date}) until the last exam date.
+    You MUST output the "date" field in EXACTLY "YYYY-MM-DD" format (e.g., "{current_date}").
     Allocate time dynamically based on the "estimated_hours" or size of each topic, prioritizing subjects whose exams are sooner.
     Ensure topics are spread out reasonably.
     

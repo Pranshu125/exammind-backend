@@ -77,3 +77,4 @@ class MasterScheduleRequest(BaseModel):
     exam_name: str
     subjects: List[SubjectData]
     engine: str = "groq"
+    current_date: str = ""
