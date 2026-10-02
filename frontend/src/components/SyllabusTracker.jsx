@@ -11,7 +11,10 @@ export default function SyllabusTracker() {
   const [loading, setLoading] = useState(true);
 
   // For testing, let's just get today's date in YYYY-MM-DD
-  const today = new Date().toISOString().split('T')[0];
+    // Get today's local date in YYYY-MM-DD
+  const localDateObj = new Date();
+  const offset = localDateObj.getTimezoneOffset() * 60000;
+  const today = (new Date(localDateObj - offset)).toISOString().split('T')[0];
 
   useEffect(() => {
     if (!currentUser) return;
@@ -24,7 +27,7 @@ export default function SyllabusTracker() {
         if (exam.schedule) {
           exam.schedule.forEach((day, dayIndex) => {
             // Find tasks that match today's date, or if it's the first day (fallback for testing)
-            if (day.date === today || (tasksForToday.length === 0 && dayIndex === 0)) {
+            if (day.date === today) {
               day.tasks.forEach((task, taskIdx) => {
                 tasksForToday.push({
                   ...task,

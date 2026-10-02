@@ -155,8 +155,10 @@ export default function ExamDashboard() {
         
         <div className="space-y-6">
           
-          const todayStr = new Date().toISOString().split('T')[0];
-          {examData.schedule?.map((day, dayIndex) => {
+                      const localDateObj = new Date();
+            const offset = localDateObj.getTimezoneOffset() * 60000;
+            const todayStr = (new Date(localDateObj - offset)).toISOString().split('T')[0];
+            {examData.schedule?.map((day, dayIndex) => {
             const hasTasks = day.tasks && day.tasks.length > 0;
             const dayCompleted = hasTasks && day.tasks.every(t => t.completed);
             const isToday = (day.date === todayStr);

@@ -100,9 +100,15 @@ export default function UploadComponent() {
     if (Object.keys(extractedTopics).length === 0) return alert("Please extract topics for at least one subject.");
     setGeneratingPlan(true);
     try {
+            // Get today's local date in YYYY-MM-DD
+      const localDateObj = new Date();
+      const offset = localDateObj.getTimezoneOffset() * 60000;
+      const localToday = (new Date(localDateObj - offset)).toISOString().split('T')[0];
+
       const payload = {
         exam_name: manualData.examName || "My Exam",
         engine: engine,
+        current_date: localToday,
         subjects: extractedSubjects.filter(s => extractedTopics[s.id]).map(s => ({
           name: s.name,
           date: s.date,

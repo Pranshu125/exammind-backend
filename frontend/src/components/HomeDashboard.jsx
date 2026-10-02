@@ -29,9 +29,10 @@ const HomeDashboard = () => {
   }
 
   
-  // Local Date Sync logic
-  const todayDateObj = new Date();
-  const todayStr = todayDateObj.toISOString().split('T')[0];
+    // Local Date Sync logic
+  const localDateObj = new Date();
+  const offset = localDateObj.getTimezoneOffset() * 60000;
+  const todayStr = (new Date(localDateObj - offset)).toISOString().split('T')[0];
   
   let totalTasks = 0;
   let completedTasks = 0;
