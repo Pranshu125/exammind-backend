@@ -213,21 +213,13 @@ export function ThemeProvider({ children }) {
     
     // Font Size Override
     if (fontSize === 'small') {
-      css += 
-        html { font-size: 14px !important; }
-      ;
+      css += `html { font-size: 14px !important; }`;
     } else if (fontSize === 'large') {
-      css += 
-        html { font-size: 18px !important; }
-      ;
+      css += `html { font-size: 18px !important; }`;
     } else if (fontSize === 'xlarge') {
-      css += 
-        html { font-size: 20px !important; }
-      ;
+      css += `html { font-size: 20px !important; }`;
     } else {
-      css += 
-        html { font-size: 16px !important; }
-      ;
+      css += `html { font-size: 16px !important; }`;
     }
 
     // Layout Density Override
