@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const AIContext = createContext();
 
@@ -7,9 +7,17 @@ export function useAI() {
 }
 
 export function AIProvider({ children }) {
-    // Default to groq because OpenAI account has no credits
-    const [engine, setEngine] = useState('groq');
+    // Default to groq but load from localStorage if available
+    const [engine, setEngineState] = useState(() => {
+        const saved = localStorage.getItem('exammind_ai_engine');
+        return saved || 'groq';
+    });
     const [syllabusData, setSyllabusData] = useState(null);
+
+    const setEngine = (newEngine) => {
+        setEngineState(newEngine);
+        localStorage.setItem('exammind_ai_engine', newEngine);
+    };
 
     return (
         <AIContext.Provider value={{ engine, setEngine, syllabusData, setSyllabusData }}>
