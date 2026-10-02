@@ -33,7 +33,7 @@ export default function Dashboard() {
 
 
   return (
-    <div className="flex h-screen w-full max-w-[1600px] mx-auto bg-[#FAFAFA] dark:bg-gray-950 font-sans overflow-hidden text-gray-900 relative shadow-2xl xl:border-x xl:border-gray-200 dark:xl:border-gray-800">
+    <div className="flex h-screen bg-transparent font-sans w-full overflow-hidden text-gray-900">
       
       {/* Mobile Sidebar Overlay */}
       {mobileSidebarOpen && (
