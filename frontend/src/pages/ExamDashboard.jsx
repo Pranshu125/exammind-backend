@@ -185,15 +185,7 @@ export default function ExamDashboard() {
                       <p className="text-sm text-gray-500 font-medium">{day.day_of_week}, {day.date}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg border-2 ${dayCompleted ? 'bg-green-500 border-green-500 text-white' : 'bg-white border-gray-200 text-gray-400'}`}>
-                      {dayCompleted ? <CheckCircle2 size={24} /> : dayIndex + 1}
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-xl text-gray-900">Module {dayIndex + 1}</h3>
-                      <p className="text-sm text-gray-500 font-medium">{day.day_of_week}, {day.date}</p>
-                    </div>
-                  </div>
+                  
                   {hasTasks && (
                     <div className="text-sm font-semibold text-gray-400 bg-white px-3 py-1 rounded-full border border-gray-200">
                       {day.tasks.filter(t => t.completed).length} / {day.tasks.length} Lessons
@@ -255,3 +247,4 @@ export default function ExamDashboard() {
     </div>
   );
 }
+
