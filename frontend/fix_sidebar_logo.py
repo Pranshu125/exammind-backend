@@ -1,0 +1,19 @@
+import re
+
+with open("src/components/Sidebar.jsx", "r", encoding="utf-8") as f:
+    content = f.read()
+
+# Replace the Sparkles icon container with the image
+old_logo = """<div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+              <Sparkles size={16} className="text-white" />
+            </div>"""
+new_logo = """<div className="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-gray-700 shadow-sm flex items-center justify-center">
+              <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+            </div>"""
+
+content = content.replace(old_logo, new_logo)
+
+with open("src/components/Sidebar.jsx", "w", encoding="utf-8") as f:
+    f.write(content)
+
+print("done")

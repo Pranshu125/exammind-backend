@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%; /* Light mode background */
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  body {
+    @apply bg-[#FAFAFA] text-gray-900 antialiased font-medium;
+  }
+
+  /* Global input overrides */
+  input, textarea, select {
+    @apply bg-white border border-gray-200 p-3 focus:border-black focus:ring-1 focus:ring-black transition-all outline-none w-full text-gray-900 placeholder-gray-400 rounded-lg shadow-sm;
+  }
+}
+
+@layer utilities {
+  .btn-base {
+    @apply relative overflow-hidden bg-white border border-gray-200 text-gray-900 shadow-sm hover:shadow-md hover:border-gray-300 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 px-5 py-2.5;
+  }
+  .btn-base:active {
+    @apply scale-[0.98] bg-gray-50;
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden bg-black text-white shadow-md hover:shadow-lg hover:bg-gray-800 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 px-5 py-2.5;
+  }
+  .btn-primary:active {
+    @apply scale-[0.98];
+  }
+}
