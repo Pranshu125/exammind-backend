@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { HelpCircle } from 'lucide-react';
 import { useAI } from '../contexts/AIContext';
+import TokenBadge from './TokenBadge';
 
 import CustomSelect from './CustomSelect';
 
@@ -170,9 +171,7 @@ export default function QuizView() {
               <p className="text-purple-700 mb-4">
                 {calculateScore() === quiz.questions.length ? 'Perfect! You mastered this topic.' : 'Keep reviewing the notes!'}
               </p>
-              <div className="inline-block text-xs text-gray-500 font-mono bg-white px-3 py-1.5 rounded-md border border-purple-100">
-                Tokens used: ~{Math.round(JSON.stringify(quiz).length / 3.5)}
-              </div>
+              <TokenBadge data={quiz} />
             </div>
           )}
         </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { BookOpen, Send, Plus, Loader2 } from 'lucide-react';
 import { useAI } from '../contexts/AIContext';
+import TokenBadge from './TokenBadge';
 import { useAuth } from '../contexts/AuthContext';
 import { db } from '../lib/firebase';
 import { collection, addDoc, getDocs, doc, updateDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
@@ -211,9 +212,7 @@ export default function NotesView() {
                       <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Summary</h4>
                       <p className="text-gray-600 dark:text-gray-400 italic">{selectedNote.summary}</p>
                     </div>
-                    <div className="text-xs text-gray-400 font-mono bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-md whitespace-nowrap">
-                      Tokens: ~{Math.round((JSON.stringify(selectedNote).length) / 3.5)}
-                    </div>
+                    <TokenBadge data={selectedNote} />
                   </div>
               </div>
 
