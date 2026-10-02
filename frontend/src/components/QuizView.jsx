@@ -74,7 +74,15 @@ export default function QuizView() {
           placeholder="Enter a topic to generate a quiz" 
           className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none w-full min-w-0"
         />
-        <div className="flex gap-3 w-full md:w-auto">
+                <div className="flex gap-3 w-full md:w-auto">
+          <select
+            value={engine}
+            onChange={(e) => setEngine(e.target.value)}
+            className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-medium"
+          >
+            <option value="groq">Groq (Fast)</option>
+            <option value="gemini">Gemini</option>
+          </select>
           <CustomSelect 
             value={difficulty}
             onChange={e => setDifficulty(e.target.value)}
@@ -155,13 +163,16 @@ export default function QuizView() {
               Submit Quiz
             </button>
           ) : (
-            <div className="mt-8 p-6 bg-purple-50 border border-purple-200 rounded-xl text-center">
+                        <div className="mt-8 p-6 bg-purple-50 border border-purple-200 rounded-xl text-center">
               <h3 className="text-2xl font-bold text-purple-900 mb-2">
                 Your Score: {calculateScore()} / {quiz.questions.length}
               </h3>
-              <p className="text-purple-700">
+              <p className="text-purple-700 mb-4">
                 {calculateScore() === quiz.questions.length ? 'Perfect! You mastered this topic.' : 'Keep reviewing the notes!'}
               </p>
+              <div className="inline-block text-xs text-gray-500 font-mono bg-white px-3 py-1.5 rounded-md border border-purple-100">
+                Tokens used: ~{Math.round(JSON.stringify(quiz).length / 3.5)}
+              </div>
             </div>
           )}
         </div>

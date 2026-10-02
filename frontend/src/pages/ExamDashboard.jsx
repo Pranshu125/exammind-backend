@@ -110,6 +110,10 @@ export default function ExamDashboard() {
     document.body.removeChild(link);
   };
 
+  const localDateObj = new Date();
+  const offset = localDateObj.getTimezoneOffset() * 60000;
+  const todayStr = (new Date(localDateObj - offset)).toISOString().split('T')[0];
+
   const getTaskIcon = (type) => {
     switch(type?.toLowerCase()) {
       case 'revision': return <Brain className="text-purple-500" size={20} />;
@@ -160,10 +164,6 @@ export default function ExamDashboard() {
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 px-2">Course Curriculum</h2>
         
         <div className="space-y-6">
-          
-                      const localDateObj = new Date();
-            const offset = localDateObj.getTimezoneOffset() * 60000;
-            const todayStr = (new Date(localDateObj - offset)).toISOString().split('T')[0];
             {examData.schedule?.map((day, dayIndex) => {
             const hasTasks = day.tasks && day.tasks.length > 0;
             const dayCompleted = hasTasks && day.tasks.every(t => t.completed);
