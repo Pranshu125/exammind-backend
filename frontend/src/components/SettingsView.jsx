@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { updateProfile, updatePassword, deleteUser, linkWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
 import { storage, db } from '../lib/firebase';
 import { LogOut, Copy, Check, X, User, Shield, Loader2, Palette, Camera, GraduationCap, MapPin, Phone, Code, Briefcase, Globe, BookText, Settings as SettingsIcon, ChevronRight, ArrowLeft, Bell, BookOpen, Bot, Calendar, Clock, ToggleLeft, ToggleRight, CheckSquare } from 'lucide-react';
 import CustomSelect from './CustomSelect';
@@ -13,7 +13,21 @@ export default function SettingsView() {
   const { theme, setTheme, fontSize, setFontSize, accentColor, setAccentColor, layoutDensity, setLayoutDensity } = useTheme();
   
   const [activeTab, setActiveTab] = useState('menu');
-  const [showWebcalModal, setShowWebcalModal] = useState(false);
+    const [showWebcalModal, setShowWebcalModal] = useState(false);
+  const [webcalUrl, setWebcalUrl] = useState('');
+  const [syncingWebcal, setSyncingWebcal] = useState(false);
+
+  useEffect(() => {
+    if (showWebcalModal) {
+      import('../lib/syncCalendar').then(({ generateAndUploadWebcal }) => {
+        setSyncingWebcal(true);
+        generateAndUploadWebcal(currentUser).then(url => {
+          if (url) setWebcalUrl(url);
+          setSyncingWebcal(false);
+        });
+      });
+    }
+  }, [showWebcalModal]);
   const [copiedLink, setCopiedLink] = useState(false);
   const [selectedCalendarPlatform, setSelectedCalendarPlatform] = useState('google');
   const [displayName, setDisplayName] = useState(currentUser?.displayName || '');
@@ -552,17 +566,18 @@ export default function SettingsView() {
                       <div className="mb-8">
                         <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">Your Private Subscription URL</label>
                         <div className="flex items-center gap-2">
-                          <input 
-                            readOnly 
-                            value={`webcal://examind.web.app/api/calendar/${currentUser?.uid || "demo"}`}
-                            className="w-full bg-gray-100 border border-gray-200 text-gray-800 p-3 rounded-xl font-mono text-sm focus:outline-none"
-                          />
-                          <button 
-                            onClick={() => {
-                              navigator.clipboard.writeText(`webcal://examind.web.app/api/calendar/${currentUser?.uid || "demo"}`);
-                              setCopiedLink(true);
-                              setTimeout(() => setCopiedLink(false), 3000);
-                            }}
+                                                      <input 
+                              readOnly 
+                              value={syncingWebcal ? "Generating secure link..." : webcalUrl}
+                              className="w-full bg-gray-100 border border-gray-200 text-gray-800 p-3 rounded-xl font-mono text-sm focus:outline-none"
+                            />
+                            <button 
+                              disabled={syncingWebcal}
+                              onClick={() => {
+                                navigator.clipboard.writeText(webcalUrl);
+                                setCopiedLink(true);
+                                setTimeout(() => setCopiedLink(false), 3000);
+                              }}
                             className={`flex items-center gap-2 px-4 py-3 rounded-xl font-bold transition-all ${copiedLink ? 'bg-green-100 text-green-700' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
                           >
                             {copiedLink ? <><Check size={18}/> Copied</> : <><Copy size={18}/> Copy</>}

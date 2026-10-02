@@ -134,10 +134,16 @@ export default function UploadComponent() {
       }
       const scheduleData = await response.json();
       const examId = Date.now().toString();
-      await setDoc(doc(db, `users/${currentUser.uid}/exams`, examId), {
+            await setDoc(doc(db, `users/${currentUser.uid}/exams`, examId), {
         ...scheduleData,
         createdAt: new Date().toISOString()
       });
+      try {
+        const { generateAndUploadWebcal } = await import("../lib/syncCalendar");
+        await generateAndUploadWebcal(currentUser);
+      } catch (e) {
+        console.error("Auto-sync failed:", e);
+      }
       alert("Master schedule generated successfully!");
       navigate(`/exam/${examId}`);
     } catch (error) {

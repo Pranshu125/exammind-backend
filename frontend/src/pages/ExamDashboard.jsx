@@ -36,7 +36,13 @@ export default function ExamDashboard() {
       newSchedule[dayIndex].tasks[taskIndex].completed = !currentStatus;
       setExamData({ ...examData, schedule: newSchedule });
       const docRef = doc(db, `users/${currentUser.uid}/exams`, id);
-      await updateDoc(docRef, { schedule: newSchedule });
+            await updateDoc(docRef, { schedule: newSchedule });
+      try {
+        const { generateAndUploadWebcal } = await import("../lib/syncCalendar");
+        await generateAndUploadWebcal(currentUser);
+      } catch (e) {
+        console.error("Auto-sync failed:", e);
+      }
     } catch (err) {
       console.error(err);
     }
